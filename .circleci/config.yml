@@ -1,0 +1,29 @@
+version: 2.0
+jobs:
+  build_gcc_latest:
+    docker:
+      - image: circleci/golang:1.10
+      #- image: circleci/postgres:9.6-alpine
+    working_directory: /go/src/github.com/concurrency-6
+    steps:
+      - checkout
+      - run: go get github.com/PuerkitoBio/goquery
+      - run:
+          name: Testing go files in functions.
+          command:
+            go test github.com/concurrency-6/functions
+      - run:
+          name: Building functions.
+          command:
+            go build github.com/concurrency-6/functions
+      - run:
+          name: Building main.
+          command:
+            go install github.com/concurrency-6/main 
+      
+            
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_gcc_latest
